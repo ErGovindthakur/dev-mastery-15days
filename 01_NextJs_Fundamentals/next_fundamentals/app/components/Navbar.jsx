@@ -13,7 +13,7 @@ const Navbar = () => {
   };
   
   return (
-    <div className="flex justify-center gap-5">
+    <div className="flex justify-center gap-5 bg-gray-900 py-8">
       <Link href={"/"} className={linkClass("/")}>
         Home
       </Link>
@@ -23,7 +23,7 @@ const Navbar = () => {
       <Link href={"/contact"} className={linkClass("/contact")}>
         Contact
       </Link>
-      <Link
+      {/* <Link
         href={"/userData"}
         className={
           pathname.startsWith("/userData")
@@ -32,7 +32,8 @@ const Navbar = () => {
         }
       >
         UserData
-      </Link>
+      </Link> */}
+      <Link href={"/projects"}>Projects</Link>
       <Link href={"/products"}
       className={pathname.startsWith("/products") ? "font-extrabold text-blue-500" : "font-light text-gray-500"}
       >Products</Link>
