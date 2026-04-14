@@ -2,6 +2,7 @@
 import Link from "next/link";
 import React from "react";
 import { usePathname } from "next/navigation";
+
 const Navbar = () => {
   const pathname = usePathname();
 
@@ -10,6 +11,7 @@ const Navbar = () => {
       ? "font-extrabold text-blue-500"
       : "font-light text-gray-500";
   };
+  
   return (
     <div className="flex justify-center gap-5">
       <Link href={"/"} className={linkClass("/")}>
@@ -31,6 +33,9 @@ const Navbar = () => {
       >
         UserData
       </Link>
+      <Link href={"/products"}
+      className={pathname.startsWith("/products") ? "font-extrabold text-blue-500" : "font-light text-gray-500"}
+      >Products</Link>
     </div>
   );
 };
