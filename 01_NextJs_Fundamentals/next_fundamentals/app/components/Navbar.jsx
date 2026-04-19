@@ -33,7 +33,7 @@ const Navbar = () => {
       >
         UserData
       </Link> */}
-      <Link href={"/projects"}>Projects</Link>
+      <Link href={"/projects"} className={pathname.startsWith("/projects")?"font-extrabold text-blue-500":"font-light text-gray-500"}>Projects</Link>
       <Link href={"/products"}
       className={pathname.startsWith("/products") ? "font-extrabold text-blue-500" : "font-light text-gray-500"}
       >Products</Link>
