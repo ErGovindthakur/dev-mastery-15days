@@ -3,7 +3,7 @@ import React from 'react'
 
 const ProjectPage = async() => {
      const res = await fetch("http://localhost:3000/api/projects",{
-          cache:"no-store"
+          cache:"no-store" // SSR
      })
 
      if(!res.ok){
