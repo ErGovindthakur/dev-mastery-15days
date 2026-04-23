@@ -9,7 +9,6 @@ export const GET = async () => {
   return Response.json(blogs);
 };
 
-// api/blogs/route.js
 
 export const POST = async (req) => {
   await ConnectDB();
