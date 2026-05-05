@@ -1,0 +1,25 @@
+{
+  "name": "day-05-crudwithauth",
+  "version": "1.0.0",
+  "description": "Create a complete authenticated notes app with fully enabled crud functionality",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "Nodejs",
+    "Expresjs",
+    "MongoDb",
+    "Bcryptjs",
+    "dotenv",
+    "cookie-parser"
+  ],
+  "author": "Er Govind Thakur",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^9.6.1"
+  }
+}
