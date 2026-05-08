@@ -10,4 +10,4 @@ route.put("/updateTodo/:id",UpdateTodo);
 route.delete("/deleteTodo/:id",deleteTodo);
 
 
-export const TodoRouter = route;
+export const TodoRoute = route;
