@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { TodoRoute } from "./routes/todoRoutes.js";
@@ -13,7 +14,11 @@ app.use(express.json({limit:'16kb'}));
 // accepts raw json data
 app.use(express.urlencoded({extended:true}));
 //accepts formData
-
+app.use(cors({
+     origin:"http://localhost:5173",
+     credentials: true,
+}));
+// Test api
 app.get("/",(req,res)=>{
      res.status(200).json({
           success:true,
