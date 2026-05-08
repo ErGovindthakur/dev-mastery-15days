@@ -5,7 +5,7 @@ import { authenticatedUser } from "../middleware/authMiddleware.js";
 const route = express.Router();
 
 route.post("/createTodo",authenticatedUser,createTodo);
-route.get("/getAllTodos",getAllTodos);
+route.get("/getAllTodos",authenticatedUser,getAllTodos);
 route.get("/getSingleTodo/:id",getSingleTodo);
 route.put("/updateTodo/:id",authenticatedUser,UpdateTodo);
 route.delete("/deleteTodo/:id",authenticatedUser,deleteTodo);
