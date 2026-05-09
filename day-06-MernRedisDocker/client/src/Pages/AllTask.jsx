@@ -1,4 +1,4 @@
-import { getAllTasks } from "@/api/endpoint";
+import { deleteTaskById, getAllTasks } from "@/api/endpoint";
 import { Button } from "@/components/ui/button";
 import CreateTaskForm from "@/Task/CreateTaskForm";
 import { useEffect, useState } from "react";
@@ -7,8 +7,9 @@ import { toast } from "sonner";
 
 const AllTask = () => {
   const [tasks, setTasks] = useState([]);
+  const [updateTask, setUpdateTask] = useState();
   const [loading, setLoading] = useState(false);
-  const [toggle,setToggle] = useState(true);
+  const [toggle, setToggle] = useState(false);
   const navigate = useNavigate();
 
   const getAllTodos = async () => {
@@ -41,16 +42,53 @@ const AllTask = () => {
     return <h3 className="text-white">No tasks found!</h3>;
 
   const toggleTaskForm = () => {
-    setToggle((prev)=>{return !prev});
-  }
+    setToggle((prev) => {
+      return !prev;
+    });
+    setUpdateTask(null);
+  };
+
+  const handleEditClick = (id) => {
+    setUpdateTask(id);
+    setToggle(true);
+  };
+
+  const handleDeleteClick = async(id) => {
+    console.log("Task to Delete : ",id);
+    try {
+      setLoading(true);
+      await deleteTaskById(id);
+      toast.success("Task deleted");
+      await getAllTodos();
+    } catch (error) {
+      console.log(error.message || "Failed to delete task");
+      toast.error(error.message || "Failed to delete task");
+    }finally{
+      setLoading(false);
+    }
+  };
+  
+  
 
   return (
-    <div className="text-white w-full h-screen">
-    <Button variant="outline" className={"text-black relative left-3.5 top-3.5"} onClick={toggleTaskForm}>Add Task</Button>
-    {
-      toggle && <CreateTaskForm toggle={toggle} setToggle={setToggle} />
-    }
-      <div className="w-full flex container mx-auto justify-center gap-5">
+    <div className="text-white w-full min-h-screen px-10">
+      <Button
+        variant="outline"
+        className={"text-black relative left-3.5 top-3.5 my-5"}
+        onClick={toggleTaskForm}
+      >
+        {toggle ? "close Form" : "Add Task"}
+      </Button>
+      {toggle && (
+        <CreateTaskForm
+          toggle={toggle}
+          setToggle={setToggle}
+          refreshTask={getAllTodos}
+          updateTaskId={updateTask}
+          tasks={tasks}
+        />
+      )}
+      <div className="w-full flex justify-center gap-x-5 gap-y-2 flex-wrap">
         {tasks.map((task) => {
           return (
             <div
@@ -59,13 +97,28 @@ const AllTask = () => {
             >
               <h2 className="text-lg">{task.title}</h2>
               <p className="text-gray-500 text-sm">
-                {task.description.slice(0, 60)}...
+                {(task.description || "").slice(0, 36)}...
               </p>
               <p
                 className={`${task.status === "pending" ? "text-red-600 text-sm bg-red-300 rounded-full px-1 py-1" : task.status === "completed" ? "text-green-600 text-sm bg-green-300 rounded-full px-1 py-1" : "text-yellow-600 text-sm bg-yellow-300 rounded-full px-1 py-1"} flex justify-center`}
               >
                 {task.status}
               </p>
+
+              <div className="my-2">
+                <Button
+                  className={"text-white bg-green-500 mr-2"}
+                  onClick={() => handleEditClick(task._id)}
+                >
+                  Update
+                </Button>
+                <Button
+                  className={"text-white bg-red-500"}
+                  onClick={() => handleDeleteClick(task._id)}
+                >
+                  Delete
+                </Button>
+              </div>
             </div>
           );
         })}

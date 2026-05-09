@@ -10,3 +10,6 @@ export const logoutUser = () => axios.get(`${userBaseUrl}/logout`,{withCredentia
 
 // Todos endpoints
 export const getAllTasks = () => axios.get(`${TodoBaseUrl}/getAllTodos`,{withCredentials:true});
+export const createTask = (data) => axios.post(`${TodoBaseUrl}/createTodo`,data,{withCredentials:true});
+export const updateTaskById = (id,data) => axios.put(`${TodoBaseUrl}/updateTodo/${id}`,data,{withCredentials:true})
+export const deleteTaskById = (id) => axios.delete(`${TodoBaseUrl}/deleteTodo/${id}`,{withCredentials:true});
