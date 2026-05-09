@@ -37,10 +37,6 @@ const AllTask = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) return <h3 className="text-white">Loading...</h3>;
-  if (tasks.length === 0)
-    return <h3 className="text-white">No tasks found!</h3>;
-
   const toggleTaskForm = () => {
     setToggle((prev) => {
       return !prev;
@@ -53,8 +49,8 @@ const AllTask = () => {
     setToggle(true);
   };
 
-  const handleDeleteClick = async(id) => {
-    console.log("Task to Delete : ",id);
+  const handleDeleteClick = async (id) => {
+    console.log("Task to Delete : ", id);
     try {
       setLoading(true);
       await deleteTaskById(id);
@@ -63,12 +59,12 @@ const AllTask = () => {
     } catch (error) {
       console.log(error.message || "Failed to delete task");
       toast.error(error.message || "Failed to delete task");
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
-  
-  
+
+  if (loading) return <h3 className="text-white">Loading...</h3>;
 
   return (
     <div className="text-white w-full min-h-screen px-10">
@@ -88,6 +84,9 @@ const AllTask = () => {
           tasks={tasks}
         />
       )}
+        {tasks.length === 0 ? (
+        <h3 className="text-white mt-10">No tasks found! Create one to get started.</h3>
+      ) : (
       <div className="w-full flex justify-center gap-x-5 gap-y-2 flex-wrap">
         {tasks.map((task) => {
           return (
@@ -123,6 +122,7 @@ const AllTask = () => {
           );
         })}
       </div>
+      )}
     </div>
   );
 };
