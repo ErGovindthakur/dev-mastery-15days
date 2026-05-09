@@ -1,4 +1,6 @@
 import { getAllTasks } from "@/api/endpoint";
+import { Button } from "@/components/ui/button";
+import CreateTaskForm from "@/Task/CreateTaskForm";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -6,6 +8,7 @@ import { toast } from "sonner";
 const AllTask = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [toggle,setToggle] = useState(true);
   const navigate = useNavigate();
 
   const getAllTodos = async () => {
@@ -37,10 +40,16 @@ const AllTask = () => {
   if (tasks.length === 0)
     return <h3 className="text-white">No tasks found!</h3>;
 
-  console.log("Tasks : ", tasks);
+  const toggleTaskForm = () => {
+    setToggle((prev)=>{return !prev});
+  }
 
   return (
     <div className="text-white w-full h-screen">
+    <Button variant="outline" className={"text-black relative left-3.5 top-3.5"} onClick={toggleTaskForm}>Add Task</Button>
+    {
+      toggle && <CreateTaskForm toggle={toggle} setToggle={setToggle} />
+    }
       <div className="w-full flex container mx-auto justify-center gap-5">
         {tasks.map((task) => {
           return (
