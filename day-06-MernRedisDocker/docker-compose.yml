@@ -1,4 +1,3 @@
-version: "3.6"
 name: DockerRedisAuth
 
 services:
@@ -8,10 +7,18 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - mongo_data:/data/db  # Added space and internal slash
+      - mongo_data:/data/db
     networks:
       - DockerRedisAuth
-  
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis-server
+    ports:
+      - "6379:6379"
+    networks:
+      - DockerRedisAuth
+
   backend:
     build:
       context: ./server
@@ -21,13 +28,13 @@ services:
     volumes:
       - ./server:/app
       - /app/node_modules
-    networks:
-      - DockerRedisAuth
-    ports: # Changed from port
+    ports:
       - "9090:9090"
     depends_on:
       - mongo
-    # The command here will override the CMD in your Dockerfile
+      - redis
+    networks:
+      - DockerRedisAuth
     command: ["npm", "run", "dev"]
 
   frontend:
@@ -37,16 +44,16 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
-    networks:
-      - DockerRedisAuth
-    ports: # Changed from port
+    ports:
       - "5173:5173"
-    command: ["npm", "run", "dev", "--", "--host"] # Added --host for Vite
     depends_on:
       - backend
+    networks:
+      - DockerRedisAuth
+    command: ["npm", "run", "dev", "--", "--host"]
 
 volumes:
-  mongo_data: # Matches the name used in the mongo service
+  mongo_data:
 
 networks:
   DockerRedisAuth:
