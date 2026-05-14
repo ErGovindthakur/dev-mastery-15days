@@ -1,12 +1,30 @@
-version: 3.6
+# ==============================================================================
+# YAML DATA TYPES & REAL-WORLD DOCKER-COMPOSE APPLICATIONS
+# ==============================================================================
 
+version: "3.6"
+
+# ------------------------------------------------------------------------------
+# TYPE: Scalar (String / Integer) with Metadata
+# PROJECT USAGE: Defines operational metadata or schema versions.
+# DOCKER-COMPOSE EXAMPLE: 'version: "3.8"' controls parser features.
+# ------------------------------------------------------------------------------
 chai_type: masala_chai # Inline comment
 temperature: hot
 
+# ------------------------------------------------------------------------------
+# TYPE: Integer / Float
+# PROJECT USAGE: Assigns hardware limits, port numbers, or scale factors.
+# DOCKER-COMPOSE EXAMPLE: 'ports: - "8080:80"' or 'cpus: 0.5'.
+# ------------------------------------------------------------------------------
 serving: 2
 brewing_time: 5
 
-
+# ------------------------------------------------------------------------------
+# TYPE: Mapping / Dictionary (Object)
+# PROJECT USAGE: Structures configuration namespaces for isolated components.
+# DOCKER-COMPOSE EXAMPLE: 'services:', 'networks:', or 'volumes:'.
+# ------------------------------------------------------------------------------
 chai_recipe:
   base: black_tea
   milk: whole_milk
@@ -17,53 +35,121 @@ chai_recipe_two:
 
 # exploring data types in yaml
 
-# 1. string data types
+# ==============================================================================
+# 1. STRING DATA TYPES
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# TYPE: Bare, Double-Quoted, and Single-Quoted Strings
+# PROJECT USAGE: Double quotes allow escape sequences (\n); single quotes preserve literals.
+# DOCKER-COMPOSE EXAMPLE: 'container_name: "app_web_prod"' or 'image: 'ubuntu:latest''.
+# ------------------------------------------------------------------------------
 chai_name: Masala Chai
 description: "Chai with cardamom, ginger"
 tagline: 'The best chai in town'
 
+# ------------------------------------------------------------------------------
+# TYPE: Literal Block Scalar (|)
+# PROJECT USAGE: Multi-line strings preserving newlines.
+# DOCKER-COMPOSE EXAMPLE: Embedding initialization scripts or multi-line SSL certificates.
+# ------------------------------------------------------------------------------
 brewing_instruction: |
   boil_water
   add tea leaves
   add milk
 
+# ------------------------------------------------------------------------------
+# TYPE: Folded Block Scalar (>)
+# PROJECT USAGE: Multi-line strings that collapse newlines into single spaces.
+# DOCKER-COMPOSE EXAMPLE: Long commands or arguments for a container entrypoint.
+# ------------------------------------------------------------------------------
 brewing_instruction_two: >
   boil water
   add tea leaves
   add milk
 
-# 2. number data types
+# ==============================================================================
+# 2. NUMBER DATA TYPES
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# TYPE: Base-10 Integer, Exponential, and Hexadecimal Numbers
+# PROJECT USAGE: Resource management, memory allocations, or byte masks.
+# DOCKER-COMPOSE EXAMPLE: 'mem_limit: 1000000' or 'stop_grace_period: 1e2'.
+# ------------------------------------------------------------------------------
 cups_per_day: 3
 cups_per_day_two: 3.5e + 2
 cups_per_day_three: 0xFF22FF
 
-# 3.boolean
+# ==============================================================================
+# 3. BOOLEAN DATA TYPES
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# TYPE: Boolean (true/false, yes/no, on/off)
+# PROJECT USAGE: Flags for feature toggles or binary parameters.
+# DOCKER-COMPOSE EXAMPLE: 'tty: true', 'read_only: yes', or 'privileged: true'.
+# Note: YAML 1.2 prefers true/false; keep values quoted if they must be strings.
+# ------------------------------------------------------------------------------
 is_hot: true
 add_sugar: yes
 add_salt: no
 instant: off
 unInstant: on
 
-# 4. null data type
+# ==============================================================================
+# 4. NULL DATA TYPE
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# TYPE: Null / Empty Value (null or ~)
+# PROJECT USAGE: Explicitly clears default values or unsets pre-configured values.
+# DOCKER-COMPOSE EXAMPLE: Clearing an environment variable: 'DATABASE_URL: null'.
+# ------------------------------------------------------------------------------
 sweetener: null
 alternative_milk: ~
 
-# 5. time stamps
+# ==============================================================================
+# 5. TIMESTAMP DATA TYPES
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# TYPE: ISO-8601 Date / Timestamp
+# PROJECT USAGE: Tracks release dates, backup schedules, or image tags.
+# DOCKER-COMPOSE EXAMPLE: Labeling built images: 'build_date: 2026-05-14'.
+# ------------------------------------------------------------------------------
 morning_brew: 2026-01-15
 local_time: 2026-01-15 08:30:01
 
-# 6. collections
+# ==============================================================================
+# 6. COLLECTIONS (SEQUENCES / LISTS)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# TYPE: Block Sequence (Heterogeneous List)
+# PROJECT USAGE: Grouping multiple strings, booleans, or objects.
+# DOCKER-COMPOSE EXAMPLE: List of environment variables or exposed ports.
+# ------------------------------------------------------------------------------
 spices:
   - ginger
   - cloves
   - black_paper
   - true
   - 200
-# alternative of above
-spices2: [cardamom, ginger, cloves]
-steeping_times: [3,2,1]
 
-# nested listing
+# ------------------------------------------------------------------------------
+# TYPE: Flow Sequence (Inline List)
+# PROJECT USAGE: Compact syntax for grouping short, related primitive values.
+# DOCKER-COMPOSE EXAMPLE: Fast syntax declarations like 'ports: ["80:80", "443:443"]'.
+# ------------------------------------------------------------------------------
+spices2: [cardamom, ginger, cloves]
+steeping_times: [3, 2, 1]
+
+# ------------------------------------------------------------------------------
+# TYPE: Nested Sequence (List of Objects)
+# PROJECT USAGE: Organizing complex structural components containing unique metadata.
+# DOCKER-COMPOSE EXAMPLE: Custom device mount rules or multi-tier healthcheck blocks.
+# ------------------------------------------------------------------------------
 chai_categories:
   - name: Traditional
     varieties:
@@ -75,6 +161,11 @@ chai_categories:
       - Vanilla chai
       - Chocolate chai
 
+# ------------------------------------------------------------------------------
+# TYPE: Deeply Nested Mappings (Object Hierarchies)
+# PROJECT USAGE: Structuring advanced runtime specs, networking, and volumes.
+# DOCKER-COMPOSE EXAMPLE: Configuring nested container logging drivers or resource limits.
+# ------------------------------------------------------------------------------
 masala_chai:
   ingredients:
     tea: black_tea
@@ -87,6 +178,12 @@ masala_chai:
     preparation:
       method: simmer
       duration: 5_minutes
+
+# ------------------------------------------------------------------------------
+# TYPE: Block Array of Mappings
+# PROJECT USAGE: Setting up identical database structural instances or configurations.
+# DOCKER-COMPOSE EXAMPLE: Defining multi-stage deployment arguments or task configs.
+# ------------------------------------------------------------------------------
 chai_menu:
   - name: Masala chai
     price: 30
@@ -96,12 +193,25 @@ chai_menu:
     price: 30
     size: regular
 
+# ==============================================================================
+# 7. REUSABILITY & COMPOSITION (ANCHORS, ALIASES, MERGES)
+# ==============================================================================
 
+# ------------------------------------------------------------------------------
+# TYPE: Anchor (&)
+# PROJECT USAGE: Declares a reusable base block of properties to prevent repeating code.
+# DOCKER-COMPOSE EXAMPLE: Direct template definition for multiple identical replicas.
+# ------------------------------------------------------------------------------
 default_chai_base: &default_base
   tea: black_tea
   water: 200ml
   brewing_time: 5
 
+# ------------------------------------------------------------------------------
+# TYPE: Alias (*) and Merge Key (<<:)
+# PROJECT USAGE: References and injects properties from an Anchor into a new mapping.
+# DOCKER-COMPOSE EXAMPLE: Extending standard environment parameters to microservices.
+# ------------------------------------------------------------------------------
 morning_chai:
   <<: *default_base
   milk: 100ml
@@ -110,12 +220,27 @@ evening_chai:
   <<: *default_base
   milk: 200ml
 
-# explicit data type
+# ==============================================================================
+# 8. EXPLICIT DATA TYPES (TAGS)
+# ==============================================================================
 
+# ------------------------------------------------------------------------------
+# TYPE: Explicit Type Casting Tags (!!str, !!int)
+# PROJECT USAGE: Strips type ambiguity, forcing integers to act strictly as strings.
+# DOCKER-COMPOSE EXAMPLE: Enforcing numeric port values or text strings for environment variables.
+# ------------------------------------------------------------------------------
 zip_code: !!str 12345
 count: !!int "123"
 
-# set 
+# ==============================================================================
+# 9. SPECIALIZED COLLECTION (SETS)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# TYPE: Unordered Unique Set (!!set)
+# PROJECT USAGE: Lists items where duplicates are illegal and order is irrelevant.
+# DOCKER-COMPOSE EXAMPLE: Unique security groups, network aliases, or permission arrays.
+# ------------------------------------------------------------------------------
 unique_spices: !!set
   ? cardamom
   ? ginger
