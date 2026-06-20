@@ -1,4 +1,5 @@
 import LiftingStateUpParent from "./components/LiftingStateUpParent"
+import UseRefHook from "./components/UseRefHook"
 import UserProfile from "./components/UserProfile"
 
 const App = () => {
@@ -8,6 +9,7 @@ const App = () => {
       <UserProfile name={"Ron"} email={"ron@123"} isOnline={false}/>
       <UserProfile name={"Ringo"} email={"ringo@123"} isOnline={true}/>
       <LiftingStateUpParent />
+      <UseRefHook />
     </div>
   )
 }
