@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UploadStatus {
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model Upload {
+  id           Int          @id @default(autoincrement())
+  filename     String
+
+  totalRows    Int          @default(0)
+  insertedRows Int          @default(0)
+  failedRows   Int          @default(0)
+
+  status       UploadStatus @default(PROCESSING)
+
+  // Relations
+  dealers      Dealer[]
+  errors       UploadError[]
+
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model Dealer {
+  id           Int       @id @default(autoincrement())
+
+  name         String
+  phone        String    @unique
+  email        String
+
+  city         String
+  state        String
+
+  creditLimit  Decimal   @default(0)
+
+  // Relations
+  uploadId     Int
+  upload       Upload    @relation(fields: [uploadId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([uploadId])
+  @@index([phone])
+  @@index([email])
+}
+
+model UploadError {
+  id           Int       @id @default(autoincrement())
+
+  rowNumber    Int
+  columnName   String
+  message      String
+  value        String
+
+  // Relations
+  uploadId     Int
+  upload       Upload    @relation(fields: [uploadId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime  @default(now())
+
+  @@index([uploadId])
+}
