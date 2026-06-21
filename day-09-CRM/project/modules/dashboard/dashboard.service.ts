@@ -1,23 +1,27 @@
 import {
-  getDashboardStats,
+  getDashboardData,
+  getUploadTrend
 } from "./dashboard.repository";
 
-export async function getDashboardData() {
-  const stats =
-    await getDashboardStats();
+export async function getChartData() {
+  return getUploadTrend();
+}
+export async function getDashboardStats() {
+  const data =
+    await getDashboardData();
 
   const successRate =
-    stats.totalUploads === 0
+    data.totalUploads === 0
       ? 0
       : Math.round(
-          ((stats.totalUploads -
-            stats.totalErrors) /
-            stats.totalUploads) *
+          ((data.totalUploads -
+            data.totalErrors) /
+            data.totalUploads) *
             100
         );
 
   return {
-    ...stats,
+    ...data,
     successRate,
   };
 }

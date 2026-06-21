@@ -1,6 +1,11 @@
 "use client";
 
 import {
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+
+import {
   useRouter,
   useSearchParams,
 } from "next/navigation";
@@ -38,17 +43,39 @@ export default function Pagination({
   }
 
   return (
-    <div className="flex gap-4 mt-4">
+    <div
+      className="
+      flex
+      items-center
+      justify-between
+      rounded-2xl
+      border
+      border-slate-800
+      bg-slate-900
+      p-4
+    "
+    >
       <button
         disabled={currentPage <= 1}
         onClick={() =>
           changePage(currentPage - 1)
         }
+        className="
+          flex
+          items-center
+          gap-2
+          rounded-lg
+          px-4
+          py-2
+          hover:bg-slate-800
+          disabled:opacity-50
+        "
       >
+        <ChevronLeft size={18} />
         Previous
       </button>
 
-      <span>
+      <span className="text-slate-400">
         Page {currentPage} of{" "}
         {totalPages}
       </span>
@@ -60,8 +87,19 @@ export default function Pagination({
         onClick={() =>
           changePage(currentPage + 1)
         }
+        className="
+          flex
+          items-center
+          gap-2
+          rounded-lg
+          px-4
+          py-2
+          hover:bg-slate-800
+          disabled:opacity-50
+        "
       >
         Next
+        <ChevronRight size={18} />
       </button>
     </div>
   );
