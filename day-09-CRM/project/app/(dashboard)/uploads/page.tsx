@@ -1,12 +1,11 @@
 import SearchBox from "@/app/components/uploads/SearchBox";
-
 import UploadTable from "@/app/components/uploads/UploadTable";
-
 import Pagination from "@/app/components/uploads/Pagination";
 
 import {
   getUploadHistory,
 } from "@/modules/upload/upload.service";
+import UploadButton from "../../components/uploads/UploadButton";
 
 interface Props {
   searchParams: Promise<{
@@ -19,15 +18,14 @@ interface Props {
 export default async function UploadsPage({
   searchParams,
 }: Props) {
-  const params =
-    await searchParams;
+  const params = await searchParams;
 
   const page = Number(
     params.page ?? "1"
   );
 
   const limit = Number(
-    params.limit ?? "5"
+    params.limit ?? "10"
   );
 
   const search =
@@ -41,18 +39,34 @@ export default async function UploadsPage({
     );
 
   return (
-    <div className="max-w-5xl mx-auto p-8">
-      <h1 className="text-3xl font-bold">
-        Upload History
-      </h1>
+    <div className="space-y-6">
+      {/* Header */}
 
-      <div className="mt-4">
-        <SearchBox />
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-slate-100">
+            Upload History
+          </h1>
+
+          <p className="mt-1 text-slate-400">
+            Monitor CSV uploads and validation results.
+          </p>
+        </div>
+
+       <UploadButton />
       </div>
+
+      {/* Search */}
+
+      <SearchBox />
+
+      {/* Table */}
 
       <UploadTable
         uploads={result.data}
       />
+
+      {/* Pagination */}
 
       <Pagination
         currentPage={

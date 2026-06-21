@@ -36,23 +36,22 @@ export default function StatsCards({
         <div
           key={card.title}
           className="
-          rounded-2xl
-          border
-          bg-zinc-950
-          p-6
-          shadow-sm
-          transition-all
-          hover:-translate-y-1
-          hover:shadow-lg
-        "
+group
+relative
+overflow-hidden
+rounded-3xl
+border
+border-slate-800
+bg-slate-900
+p-6
+transition-all
+hover:border-blue-500/50
+hover:shadow-2xl
+"
         >
-          <p className="text-slate-500">
-            {card.title}
-          </p>
+          <p className="text-slate-500">{card.title}</p>
 
-          <h2 className="mt-2 text-4xl font-bold">
-            {card.value}
-          </h2>
+          <h2 className="mt-2 text-4xl font-bold">{card.value}</h2>
         </div>
       ))}
     </div>

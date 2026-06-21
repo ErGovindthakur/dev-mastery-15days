@@ -4,7 +4,7 @@ export default function QuickActions() {
   return (
     <div className="mb-6 flex gap-4">
       <Link
-        href="/uploads/new"
+        href="/uploads"
         className="
           rounded-xl
           bg-blue-600
