@@ -1,10 +1,11 @@
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-import { DealerInput } from "./upload.types";
 
 export async function createUpload(
+  tx: Prisma.TransactionClient,
   filename: string
 ) {
-  return prisma.upload.create({
+  return tx.upload.create({
     data: {
       filename,
       status: "PROCESSING",
@@ -13,6 +14,7 @@ export async function createUpload(
 }
 
 export async function updateUpload(
+  tx: Prisma.TransactionClient,
   uploadId: number,
   data: {
     totalRows: number;
@@ -21,7 +23,7 @@ export async function updateUpload(
     status: "COMPLETED" | "FAILED";
   }
 ) {
-  return prisma.upload.update({
+  return tx.upload.update({
     where: {
       id: uploadId,
     },
@@ -29,10 +31,55 @@ export async function updateUpload(
   });
 }
 
-export async function createManyDealers(
-  dealers: DealerInput[]
+export async function getUploads(
+  page: number,
+  limit: number,
+  search: string
 ) {
-  return prisma.dealer.createMany({
-    data: dealers,
+  const skip =
+    (page - 1) * limit;
+
+  const where = {
+    filename: {
+      contains: search,
+      mode: "insensitive" as const,
+    },
+  };
+
+  const [uploads, totalRecords] =
+    await Promise.all([
+      prisma.upload.findMany({
+        where,
+        skip,
+        take: limit,
+
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
+
+      prisma.upload.count({
+        where,
+      }),
+    ]);
+
+  return {
+    uploads,
+    totalRecords,
+  };
+}
+
+export async function getUploadById(
+  uploadId: number
+) {
+  return prisma.upload.findUnique({
+    where: {
+      id: uploadId,
+    },
+
+    include: {
+      dealers: true,
+      errors: true,
+    },
   });
 }

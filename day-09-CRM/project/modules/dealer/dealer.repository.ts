@@ -1,17 +1,30 @@
-import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
+
+import {
+  DealerInsertInput,
+} from "./dealer.types";
 
 export async function createManyDealers(
-  dealers: {
-    name: string;
-    phone: string;
-    email: string;
-    city: string;
-    state: string;
-    creditLimit: number;
-    uploadId: number;
-  }[]
+  tx: Prisma.TransactionClient,
+  dealers: DealerInsertInput[]
 ) {
-  return prisma.dealer.createMany({
+  return tx.dealer.createMany({
     data: dealers,
+  });
+}
+
+export async function findExistingPhones(
+  tx: Prisma.TransactionClient,
+  phones: string[]
+) {
+  return tx.dealer.findMany({
+    where: {
+      phone: {
+        in: phones,
+      },
+    },
+    select: {
+      phone: true,
+    },
   });
 }

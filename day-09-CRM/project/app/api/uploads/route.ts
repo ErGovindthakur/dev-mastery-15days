@@ -1,6 +1,35 @@
-import { NextResponse } from "next/server";
-
+import { NextRequest, NextResponse }
+from "next/server";
 import { processUpload } from "@/modules/upload/upload.service";
+
+import {
+  getUploadHistory,
+} from "@/modules/upload/upload.service";
+
+export async function GET(
+  request: NextRequest
+) {
+  const searchParams =
+    request.nextUrl.searchParams;
+
+  const page = Number(
+    searchParams.get("page") ?? 1
+  );
+
+  const limit = Number(
+    searchParams.get("limit") ?? 10
+  );
+
+  const uploads =
+    await getUploadHistory(
+      page,
+      limit
+    );
+
+  return NextResponse.json(
+    uploads
+  );
+}
 
 export async function POST(request: Request) {
   try {
@@ -16,16 +45,13 @@ export async function POST(request: Request) {
         },
         {
           status: 400,
-        }
+        },
       );
     }
 
     const text = await file.text();
 
-    const result = await processUpload(
-      file.name,
-      text
-    );
+    const result = await processUpload(file.name, text);
 
     return NextResponse.json(result);
   } catch (error) {
@@ -38,7 +64,7 @@ export async function POST(request: Request) {
       },
       {
         status: 500,
-      }
+      },
     );
   }
 }

@@ -1,15 +1,18 @@
-import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
+
+export interface UploadErrorInput {
+  rowNumber: number;
+  columnName: string;
+  message: string;
+  value: string;
+  uploadId: number;
+}
 
 export async function createManyErrors(
-  errors: {
-    rowNumber: number;
-    columnName: string;
-    message: string;
-    value: string;
-    uploadId: number;
-  }[]
+  tx: Prisma.TransactionClient,
+  errors: UploadErrorInput[]
 ) {
-  return prisma.uploadError.createMany({
+  return tx.uploadError.createMany({
     data: errors,
   });
 }
