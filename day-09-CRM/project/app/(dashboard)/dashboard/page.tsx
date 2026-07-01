@@ -1,5 +1,3 @@
-import DashboardLayout from "@/app/components/layout/DashboardLayout";
-
 import StatsCards from "@/app/components/dashboard/StatsCards";
 import UploadChart from "@/app/components/dashboard/UploadChart";
 import ActivityFeed from "@/app/components/dashboard/ActivityFeed";

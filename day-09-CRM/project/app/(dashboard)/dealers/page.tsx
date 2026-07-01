@@ -1,6 +1,3 @@
-import DashboardLayout
-from "@/app/components/layout/DashboardLayout";
-
 import DealerTable
 from "@/app/components/dealers/DealerTable";
 
