@@ -5,8 +5,8 @@ export async function getDashboardData() {
     totalUploads,
     totalDealers,
     totalErrors,
-
-    recentUploads,
+    rowAggregates,
+    recentUploads
   ] = await Promise.all([
     prisma.upload.count(),
 
@@ -14,6 +14,12 @@ export async function getDashboardData() {
 
     prisma.uploadError.count(),
 
+    prisma.upload.aggregate({
+      _sum:{
+        totalRows:true,
+        insertedRows:true
+      },
+    }),
     prisma.upload.findMany({
       orderBy: {
         createdAt: "desc",
@@ -27,7 +33,8 @@ export async function getDashboardData() {
     totalUploads,
     totalDealers,
     totalErrors,
-
+    totalRows:rowAggregates._sum.totalRows ?? 0,
+    totalInsertedRows: rowAggregates._sum.insertedRows ?? 0,
     recentUploads,
   };
 }

@@ -14,10 +14,7 @@ export async function getDashboardStats() {
     data.totalUploads === 0
       ? 0
       : Math.round(
-          ((data.totalUploads -
-            data.totalErrors) /
-            data.totalUploads) *
-            100
+          (data.totalInsertedRows / data.totalRows) * 100
         );
 
   return {
